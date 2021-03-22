@@ -5,13 +5,13 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.crob1140</groupId>
+    <groupId>de.onesty-direct</groupId>
     <artifactId>confluence-java-client</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <properties>
         <jackson.version>2.10.0.pr2</jackson.version>
-        <java.version>1.8</java.version>
+        <java.version>1.7</java.version>
         <jersey.version>2.27</jersey.version>
     </properties>
 
@@ -28,7 +28,25 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.5.1</version>
+                <executions>
+                    <execution>
+                        <id>default-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <serverId>nexus</serverId>
+                    <nexusUrl>http://bitbucket.onesty-dev.de:8081/nexus/content/repositories/0-artifacts-releases/</nexusUrl>
+                    <skipStaging>true</skipStaging>
+                </configuration>
+            </plugin>
         </plugins>
 
     </build>
@@ -99,5 +117,12 @@
         </dependency>
 
     </dependencies>
+    <distributionManagement>
+        <repository>
+            <id>0-artifacts-releases</id>
+            <name>0-artifacts-releases</name>
+            <url>https://nexus.onesty-dev.de:5083/content/repositories/0-artifacts-releases/</url>
+        </repository>
+    </distributionManagement>
 
 </project>

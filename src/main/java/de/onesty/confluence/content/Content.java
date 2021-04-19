@@ -28,11 +28,9 @@ public class Content {
   private List<Content> ancestors;
   @JsonProperty
   private ContentBody body;
-  @JsonProperty
-  private Metadata metadata;
+
   @JsonProperty
   private Version version;
-
   @SuppressWarnings("unused")
   private Content() {
     // Required for Jackson deserialization
@@ -46,8 +44,8 @@ public class Content {
     this.space = builder.space;
     this.ancestors = builder.ancestors;
     this.body = builder.body;
-    this.metadata = builder.metadata;
     this.version = builder.version;
+
   }
 
   /**
@@ -115,15 +113,6 @@ public class Content {
   }
 
   /**
-   * This method returns the metadata of this content.
-   *
-   * @return The metadata of this content.
-   */
-  public Metadata getMetadata() {
-    return metadata;
-  }
-
-  /**
    * This method returns the version of this content.
    *
    * @return The version of this content.
@@ -131,7 +120,6 @@ public class Content {
   public Version getVersion() {
     return version;
   }
-
   /**
    * This class can be used to construct an instance of {@link Content} for the purposes of creating
    * or modifying some content on the Confluence Cloud server.
@@ -145,7 +133,7 @@ public class Content {
     private Space space;
     private List<Content> ancestors;
     private ContentBody body;
-    private Metadata metadata;
+
     private Version version;
 
     /**
@@ -238,18 +226,7 @@ public class Content {
       this.ancestors = ancestors;
       return this;
     }
-
-    /**
-     * This method sets the metadata of the content.
-     *
-     * @param metadata The metadata of the content.
-     * @return This instance, for the purposes of method chaining.
-     */
-    public Builder setMetadata(Metadata metadata) {
-      this.metadata = metadata;
-      return this;
-    }
-
+    
     /**
      * This method sets the version of the content.
      *
@@ -260,7 +237,6 @@ public class Content {
       this.version = version;
       return this;
     }
-
     /**
      * This method creates an instance of {@link Content} using the values that were set on this
      * instance.

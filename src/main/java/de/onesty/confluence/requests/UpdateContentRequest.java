@@ -1,21 +1,20 @@
 package de.onesty.confluence.requests;
 
-import de.onesty.confluence.content.Content;
-import de.onesty.confluence.content.ContentBody;
-import de.onesty.confluence.content.ContentBodyType;
-import de.onesty.confluence.content.ContentStatus;
-import de.onesty.confluence.content.Label;
-import de.onesty.confluence.content.LabelPrefix;
-import de.onesty.confluence.content.Metadata;
-import de.onesty.confluence.content.StandardContentType;
-import de.onesty.confluence.content.Version;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+
 import javax.ws.rs.HttpMethod;
+
+import de.onesty.confluence.content.Content;
+import de.onesty.confluence.content.ContentBody;
+import de.onesty.confluence.content.ContentBodyType;
+import de.onesty.confluence.content.ContentStatus;
+
+import de.onesty.confluence.content.StandardContentType;
+import de.onesty.confluence.content.Version;
 
 /**
  * This class represents a request to update content in the Confluence Cloud server.
@@ -38,9 +37,6 @@ public class UpdateContentRequest extends ConfluenceRequest {
       contentBuilder.setBody(new ContentBody(builder.bodyType, builder.bodyContent));
     }
 
-    if (!builder.labels.isEmpty()) {
-      contentBuilder.setMetadata(new Metadata(builder.labels));
-    }
 
     this.content = contentBuilder
         .setTitle(builder.title)
@@ -85,8 +81,8 @@ public class UpdateContentRequest extends ConfluenceRequest {
    * @return The entity that is sent in the body of the request.
    */
   @Override
-  public Optional<Object> getBodyEntity() {
-    return Optional.of(this.content);
+  public Object getBodyEntity() {
+    return this.content;
   }
 
   /**
@@ -112,7 +108,6 @@ public class UpdateContentRequest extends ConfluenceRequest {
     private ContentBodyType bodyType;
     private String bodyContent;
     private String title;
-    private List<Label> labels = new ArrayList<>();
 
     /**
      * This method sets the unique identifier of the content to be updated.
@@ -158,30 +153,6 @@ public class UpdateContentRequest extends ConfluenceRequest {
       return this;
     }
 
-
-    /**
-     * This method adds a label to the content updated by the request, with the global prefix. To
-     * specify a different prefix, refer to {@link #addLabel(String, LabelPrefix)} instead.
-     *
-     * @param label The label to add to the content.
-     * @return This instance, for the purposes of method chaining.
-     */
-    public Builder addLabel(String label) {
-      return addLabel(label, LabelPrefix.GLOBAL);
-    }
-
-    /**
-     * This method adds a label to the content updated by the request with the given value and
-     * prefix.
-     *
-     * @param label The label to add to the content.
-     * @param prefix The prefix of the label.
-     * @return This instance, for the purposes of method chaining.
-     */
-    public Builder addLabel(String label, LabelPrefix prefix) {
-      this.labels.add(new Label(prefix, label));
-      return this;
-    }
 
 
     /**

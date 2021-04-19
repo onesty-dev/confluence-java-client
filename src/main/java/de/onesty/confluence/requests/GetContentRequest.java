@@ -1,16 +1,18 @@
 package de.onesty.confluence.requests;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.ws.rs.HttpMethod;
+
+import org.apache.commons.lang3.StringUtils;
+
 import de.onesty.confluence.content.ContentStatus;
 import de.onesty.confluence.content.SortDirection;
 import de.onesty.confluence.content.StandardContentType;
 import de.onesty.confluence.content.expand.ExpandedContentProperties;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import javax.ws.rs.HttpMethod;
 
 /**
  * This class represents a request to get content from the Confluence Cloud server.
@@ -21,7 +23,7 @@ public class GetContentRequest extends ConfluenceRequest {
   private final Integer limit;
   private final String orderByField;
   private final SortDirection orderByDirection;
-  private final LocalDate postingDay;
+
   private final String spaceKey;
   private final Integer start;
   private final ContentStatus status;
@@ -34,7 +36,6 @@ public class GetContentRequest extends ConfluenceRequest {
     limit = builder.limit;
     orderByField = builder.orderByField;
     orderByDirection = builder.orderByDirection;
-    postingDay = builder.postingDay;
     spaceKey = builder.spaceKey;
     start = builder.start;
     status = builder.status;
@@ -79,9 +80,7 @@ public class GetContentRequest extends ConfluenceRequest {
       queryParams.put("orderBy", this.orderByField + " " + this.orderByDirection.getIdentifier());
     }
 
-    if (this.postingDay != null) {
-      queryParams.put("postingDay", this.postingDay.format(DateTimeFormatter.ISO_LOCAL_DATE));
-    }
+
 
     if (this.spaceKey != null) {
       queryParams.put("spaceKey", this.spaceKey);
@@ -108,8 +107,12 @@ public class GetContentRequest extends ConfluenceRequest {
     }
 
     if (this.expandedProperties != null) {
-      queryParams.put("expand", this.expandedProperties.getProperties()
-          .stream().collect(Collectors.joining(",")));
+      List<String> properties = new ArrayList<>();
+      for (String property : this.expandedProperties.getProperties()) {
+        properties.add(property);
+      }
+
+      queryParams.put("expand", StringUtils.join(properties.toArray(new String[0]),","));
     }
 
     return queryParams;
@@ -121,8 +124,8 @@ public class GetContentRequest extends ConfluenceRequest {
    * @return The entity that is sent in the body of the request.
    */
   @Override
-  public Optional<Object> getBodyEntity() {
-    return Optional.empty();
+  public Object getBodyEntity() {
+    return null;
   }
 
   /**
@@ -143,7 +146,6 @@ public class GetContentRequest extends ConfluenceRequest {
     private Integer limit;
     private String orderByField;
     private SortDirection orderByDirection;
-    private LocalDate postingDay;
     private String spaceKey;
     private Integer start;
     private ContentStatus status;
@@ -176,17 +178,6 @@ public class GetContentRequest extends ConfluenceRequest {
       return this;
     }
 
-    /**
-     * This method sets the required posting day for results. Only content that was created on the
-     * given date will be returned as results.
-     *
-     * @param postingDay the posting date
-     * @return This instance, for the purposes of method chaining.
-     */
-    public Builder setPostingDay(LocalDate postingDay) {
-      this.postingDay = postingDay;
-      return this;
-    }
 
     /**
      * This method sets the space key for results. Only content within the given space will be

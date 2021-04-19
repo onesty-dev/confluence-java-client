@@ -1,7 +1,6 @@
 package de.onesty.confluence.requests;
 
 import java.util.Map;
-import java.util.Optional;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -35,7 +34,7 @@ public abstract class ConfluenceRequest {
    *
    * @return The entity that is sent in the body of the request.
    */
-  public abstract Optional<Object> getBodyEntity();
+  public abstract Object getBodyEntity();
 
   /**
    * This method returns the content type of this request.

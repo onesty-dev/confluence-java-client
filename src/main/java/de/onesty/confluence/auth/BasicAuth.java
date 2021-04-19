@@ -1,6 +1,7 @@
 package de.onesty.confluence.auth;
 
-import java.util.Base64;
+
+import org.apache.commons.codec.binary.Base64;
 
 /**
  * This class represents the Basic HTTP authentication scheme.
@@ -31,6 +32,6 @@ public class BasicAuth implements AuthMethod {
    */
   @Override
   public String getAuthHeaderValue() {
-    return "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
+    return "Basic " + Base64.encodeBase64String((username + ":" + password).getBytes());
   }
 }

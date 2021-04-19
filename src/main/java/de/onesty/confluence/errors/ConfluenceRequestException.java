@@ -1,7 +1,5 @@
 package de.onesty.confluence.errors;
 
-import java.util.Optional;
-
 /**
  * This class represents an error response returned from the Confluence server.
  */
@@ -47,7 +45,7 @@ public class ConfluenceRequestException extends Exception {
    *
    * @return The data contained within the error response.
    */
-  public Optional<ErrorData> getData() {
-    return Optional.ofNullable(this.data);
+  public ErrorData getData() {
+    return this.data;
   }
 }
